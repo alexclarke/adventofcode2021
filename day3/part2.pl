@@ -10,33 +10,25 @@ while (<>) {
 my $fO = \@input;
 my $fI = 0;
 until (scalar(@$fO) == 1) {
-	$fO = filter($fO, $fI, '1', '0');
+	$fO = filter($fO, $fI, '1');
 	$fI++;
 }
+my $fOres = oct("0b" . join('', @{@$fO[0]}));
 
 my $fC = \@input;
 my $fJ = 0;
 until (scalar(@$fC) == 1) {
-	$fC = filter($fC, $fJ, '0', '1');
+	$fC = filter($fC, $fJ, '0');
 	$fJ++;
 }
+my $fCres = oct("0b" . join('', @{@$fC[0]}));
 
-my $x_num;
-my $y_num;
-for (@$fO) {
-	print "fO:  @$_ \n";
-	$x_num = oct("0b" . join('', @$_));
-	print "xnum $x_num \n";
-}
-for (@$fC) {
-	print "fC:  @$_ \n";
-	$y_num = oct("0b" . join('', @$_));
-	print "ynum $y_num \n";
-}
-print $x_num * $y_num;
+print "Result: ". $fOres * $fCres ."\n";
+
+### Subroutines ###
 
 sub filter {
-	my ($in, $index, $high, $low) = @_;
+	my ($in, $index, $high) = @_;
 	my @local_input = @$in;
 	my @local_counts = most($in, $high);
 	printLines(@local_input);
@@ -82,7 +74,6 @@ sub most {
 	}
 	return @counts;
 }
-
 
 sub printLines {
 	for (@_) {
