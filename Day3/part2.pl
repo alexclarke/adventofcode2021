@@ -9,7 +9,6 @@ while (<>) {
 
 my $fO = \@input;
 my $fI = 0;
-print "START WITH ". scalar @fO . "\n";
 until (scalar(@$fO) == 1) {
 	$fO = filter($fO, $fI, '1', '0');
 	$fI++;
@@ -17,11 +16,11 @@ until (scalar(@$fO) == 1) {
 
 my $fC = \@input;
 my $fJ = 0;
-print "START WITH ". scalar @fC . "\n";
 until (scalar(@$fC) == 1) {
 	$fC = filter($fC, $fJ, '0', '1');
 	$fJ++;
 }
+
 my $x_num;
 my $y_num;
 for (@$fO) {
@@ -32,6 +31,7 @@ for (@$fO) {
 for (@$fC) {
 	print "fC:  @$_ \n";
 	$y_num = oct("0b" . join('', @$_));
+	print "ynum $y_num \n";
 }
 print $x_num * $y_num;
 
@@ -44,7 +44,12 @@ sub filter {
 	my $local_count = @local_counts[$index];
 	print "LOC COUNT : $local_count \n";
 	print "MID : " . (scalar @local_input / 2) ."\n";
-	my $common = ( $local_count > ((scalar @local_input) / 2)) ? $high : $low; 
+	my $common;
+	if ($high eq '0') {
+		$common = ( $local_count <= ((scalar @local_input) / 2)) ? 0 : 1; 
+	} else {
+		$common = ( $local_count >= ((scalar @local_input) / 2)) ? 1 : 0; 
+	}
 
 	print "Local counts : @local_counts \n";
 	print "Filtering local input of ". scalar @local_input ." items \n";
